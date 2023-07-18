@@ -1,7 +1,10 @@
 <script>
+  import Spinner from "./Components/Spinner.svelte";
+
   let prompt = "";
   let messages = [];
   let tmpPrompt;
+  let isLoading = false;
 
   async function generateText() {
     tmpPrompt = prompt;
@@ -10,6 +13,7 @@
     if (tmpPrompt.length > 5) {
       let newMessage = { role: "user", content: tmpPrompt };
       messages = [...messages, newMessage];
+      isLoading = true;
 
       const res = await fetch("http://localhost:3000/api/generate-text", {
         method: "POST",
@@ -25,6 +29,8 @@
       } else {
         console.error("Error from server:", response);
       }
+
+      isLoading = false;
     }
   }
 </script>
@@ -42,7 +48,11 @@
 
 <div id="Controls">
   <textarea bind:value={prompt} placeholder="Enter a prompt" />
-  <button on:click={generateText}>Send</button>
+  {#if isLoading}
+    <Spinner />
+  {:else}
+    <button on:click={generateText}>Send</button>
+  {/if}
 </div>
 
 <style>
@@ -67,7 +77,7 @@
     align-items: center;
     padding: 1em;
     gap: 0.5em;
-    background-color: darkgrey;
+    background-color: coral;
   }
 
   #Conversation {
