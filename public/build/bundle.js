@@ -510,7 +510,7 @@ var app = (function () {
     	return child_ctx;
     }
 
-    // (31:2) {#each messages as message, index (index)}
+    // (33:2) {#each messages as message, index (index)}
     function create_each_block(key_1, ctx) {
     	let div;
     	let p;
@@ -538,11 +538,11 @@ var app = (function () {
     			t1 = space();
     			t2 = text(t2_value);
     			t3 = space();
-    			add_location(strong, file, 33, 8, 766);
+    			add_location(strong, file, 35, 8, 886);
     			attr_dev(p, "class", "svelte-ez5uxv");
-    			add_location(p, file, 32, 6, 754);
+    			add_location(p, file, 34, 6, 874);
     			attr_dev(div, "class", div_class_value = "message " + /*message*/ ctx[5].role);
-    			add_location(div, file, 31, 4, 711);
+    			add_location(div, file, 33, 4, 831);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -576,7 +576,7 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(31:2) {#each messages as message, index (index)}",
+    		source: "(33:2) {#each messages as message, index (index)}",
     		ctx
     	});
 
@@ -621,15 +621,15 @@ var app = (function () {
     			button.textContent = "Send";
     			attr_dev(div0, "id", "Conversation");
     			attr_dev(div0, "class", "svelte-ez5uxv");
-    			add_location(div0, file, 29, 0, 638);
+    			add_location(div0, file, 31, 0, 758);
     			attr_dev(textarea, "placeholder", "Enter a prompt");
     			attr_dev(textarea, "class", "svelte-ez5uxv");
-    			add_location(textarea, file, 41, 2, 923);
+    			add_location(textarea, file, 43, 2, 1043);
     			attr_dev(button, "class", "svelte-ez5uxv");
-    			add_location(button, file, 42, 2, 987);
+    			add_location(button, file, 44, 2, 1107);
     			attr_dev(div1, "id", "Controls");
     			attr_dev(div1, "class", "svelte-ez5uxv");
-    			add_location(div1, file, 40, 0, 901);
+    			add_location(div1, file, 42, 0, 1021);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -710,17 +710,19 @@ var app = (function () {
     		$$invalidate(0, prompt = "");
 
     		if (tmpPrompt.length > 5) {
+    			let newMessage = { role: "user", content: tmpPrompt };
+    			$$invalidate(1, messages = [...messages, newMessage]);
+
     			const res = await fetch("http://localhost:3000/api/generate-text", {
     				method: "POST",
     				headers: { "Content-Type": "application/json" },
-    				body: JSON.stringify({ tmpPrompt })
+    				body: JSON.stringify({ messages })
     			});
 
     			const response = await res.json();
 
     			if (Array.isArray(response)) {
-    				$$invalidate(1, messages = response);
-    				messages.shift();
+    				$$invalidate(1, messages = [...messages, ...response.slice(messages.length)]);
     			} else {
     				console.error("Error from server:", response);
     			}

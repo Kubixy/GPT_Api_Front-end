@@ -18,8 +18,7 @@ let conversation = [
 ];
 
 app.post("/api/generate-text", async (req, res) => {
-  const userMessage = req.body.tmpPrompt;
-  conversation.push({ role: "user", content: userMessage });
+  conversation = req.body.messages;
 
   try {
     const response = await openai.createChatCompletion({

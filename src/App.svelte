@@ -8,18 +8,20 @@
     prompt = "";
 
     if (tmpPrompt.length > 5) {
+      let newMessage = { role: "user", content: tmpPrompt };
+      messages = [...messages, newMessage];
+
       const res = await fetch("http://localhost:3000/api/generate-text", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ tmpPrompt }),
+        body: JSON.stringify({ messages }),
       });
 
       const response = await res.json();
       if (Array.isArray(response)) {
-        messages = response;
-        messages.shift();
+        messages = [...messages, ...response.slice(messages.length)];
       } else {
         console.error("Error from server:", response);
       }
