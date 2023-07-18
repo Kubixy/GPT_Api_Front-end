@@ -1,5 +1,5 @@
 
-(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35730/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
+(function(l, r) { if (!l || l.getElementById('livereloadscript')) return; r = l.createElement('script'); r.async = 1; r.src = '//' + (self.location.host || 'localhost').split(':')[0] + ':35729/livereload.js?snipver=1'; r.id = 'livereloadscript'; l.getElementsByTagName('head')[0].appendChild(r) })(self.document);
 var app = (function () {
     'use strict';
 
@@ -394,45 +394,84 @@ var app = (function () {
 
     const file = "src/App.svelte";
 
-    function create_fragment(ctx) {
-    	let input;
-    	let t0;
-    	let button;
-    	let t2;
+    // (21:0) {#if response}
+    function create_if_block(ctx) {
     	let p;
-    	let t3;
-    	let mounted;
-    	let dispose;
+    	let t;
 
     	const block = {
     		c: function create() {
-    			input = element("input");
-    			t0 = space();
-    			button = element("button");
-    			button.textContent = "Generate Text";
-    			t2 = space();
     			p = element("p");
-    			t3 = text(/*response*/ ctx[1]);
-    			attr_dev(input, "placeholder", "Enter a prompt");
-    			add_location(input, file, 17, 0, 346);
-    			add_location(button, file, 18, 0, 405);
-    			add_location(p, file, 19, 0, 460);
+    			t = text(/*response*/ ctx[1]);
+    			attr_dev(p, "class", "svelte-w52cym");
+    			add_location(p, file, 21, 2, 431);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, p, anchor);
+    			append_dev(p, t);
+    		},
+    		p: function update(ctx, dirty) {
+    			if (dirty & /*response*/ 2) set_data_dev(t, /*response*/ ctx[1]);
+    		},
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(p);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block.name,
+    		type: "if",
+    		source: "(21:0) {#if response}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    function create_fragment(ctx) {
+    	let t0;
+    	let div;
+    	let textarea;
+    	let t1;
+    	let button;
+    	let mounted;
+    	let dispose;
+    	let if_block = /*response*/ ctx[1] && create_if_block(ctx);
+
+    	const block = {
+    		c: function create() {
+    			if (if_block) if_block.c();
+    			t0 = space();
+    			div = element("div");
+    			textarea = element("textarea");
+    			t1 = space();
+    			button = element("button");
+    			button.textContent = "Send";
+    			attr_dev(textarea, "placeholder", "Enter a prompt");
+    			attr_dev(textarea, "class", "svelte-w52cym");
+    			add_location(textarea, file, 25, 2, 478);
+    			attr_dev(button, "class", "svelte-w52cym");
+    			add_location(button, file, 26, 2, 542);
+    			attr_dev(div, "id", "Controls");
+    			attr_dev(div, "class", "svelte-w52cym");
+    			add_location(div, file, 24, 0, 456);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, input, anchor);
-    			set_input_value(input, /*prompt*/ ctx[0]);
+    			if (if_block) if_block.m(target, anchor);
     			insert_dev(target, t0, anchor);
-    			insert_dev(target, button, anchor);
-    			insert_dev(target, t2, anchor);
-    			insert_dev(target, p, anchor);
-    			append_dev(p, t3);
+    			insert_dev(target, div, anchor);
+    			append_dev(div, textarea);
+    			set_input_value(textarea, /*prompt*/ ctx[0]);
+    			append_dev(div, t1);
+    			append_dev(div, button);
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(input, "input", /*input_input_handler*/ ctx[3]),
+    					listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[3]),
     					listen_dev(button, "click", /*generateText*/ ctx[2], false, false, false, false)
     				];
 
@@ -440,20 +479,29 @@ var app = (function () {
     			}
     		},
     		p: function update(ctx, [dirty]) {
-    			if (dirty & /*prompt*/ 1 && input.value !== /*prompt*/ ctx[0]) {
-    				set_input_value(input, /*prompt*/ ctx[0]);
+    			if (/*response*/ ctx[1]) {
+    				if (if_block) {
+    					if_block.p(ctx, dirty);
+    				} else {
+    					if_block = create_if_block(ctx);
+    					if_block.c();
+    					if_block.m(t0.parentNode, t0);
+    				}
+    			} else if (if_block) {
+    				if_block.d(1);
+    				if_block = null;
     			}
 
-    			if (dirty & /*response*/ 2) set_data_dev(t3, /*response*/ ctx[1]);
+    			if (dirty & /*prompt*/ 1) {
+    				set_input_value(textarea, /*prompt*/ ctx[0]);
+    			}
     		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(input);
+    			if (if_block) if_block.d(detaching);
     			if (detaching) detach_dev(t0);
-    			if (detaching) detach_dev(button);
-    			if (detaching) detach_dev(t2);
-    			if (detaching) detach_dev(p);
+    			if (detaching) detach_dev(div);
     			mounted = false;
     			run_all(dispose);
     		}
@@ -477,13 +525,17 @@ var app = (function () {
     	let response = "";
 
     	async function generateText() {
-    		const res = await fetch("http://localhost:3000/api/generate-text", {
-    			method: "POST",
-    			headers: { "Content-Type": "application/json" },
-    			body: JSON.stringify({ prompt })
-    		});
+    		if (prompt.length > 5) {
+    			const res = await fetch("http://localhost:3000/api/generate-text", {
+    				method: "POST",
+    				headers: { "Content-Type": "application/json" },
+    				body: JSON.stringify({ prompt })
+    			});
 
-    		$$invalidate(1, response = await res.json());
+    			$$invalidate(1, response = await res.json());
+    		}
+
+    		$$invalidate(0, prompt = "");
     	}
 
     	const writable_props = [];
@@ -492,7 +544,7 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
-    	function input_input_handler() {
+    	function textarea_input_handler() {
     		prompt = this.value;
     		$$invalidate(0, prompt);
     	}
@@ -508,7 +560,7 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [prompt, response, generateText, input_input_handler];
+    	return [prompt, response, generateText, textarea_input_handler];
     }
 
     class App extends SvelteComponentDev {

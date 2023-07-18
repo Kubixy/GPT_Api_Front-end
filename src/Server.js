@@ -30,6 +30,7 @@ app.post("/api/generate-text", async (req, res) => {
     const assistantMessage = response.data.choices[0].message.content;
     conversation.push({ role: "assistant", content: assistantMessage });
     res.json(assistantMessage);
+    //res.json(conversation);
     console.log(
       `Total tokens used in conversation: ${countTokensInConversation(
         conversation
