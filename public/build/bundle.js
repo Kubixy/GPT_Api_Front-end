@@ -41,6 +41,16 @@ var app = (function () {
     function element(name) {
         return document.createElement(name);
     }
+    function text(data) {
+        return document.createTextNode(data);
+    }
+    function space() {
+        return text(' ');
+    }
+    function listen(node, event, handler, options) {
+        node.addEventListener(event, handler, options);
+        return () => node.removeEventListener(event, handler, options);
+    }
     function attr(node, attribute, value) {
         if (value == null)
             node.removeAttribute(attribute);
@@ -49,6 +59,9 @@ var app = (function () {
     }
     function children(element) {
         return Array.from(element.childNodes);
+    }
+    function set_input_value(input, value) {
+        input.value = value == null ? '' : value;
     }
     function custom_event(type, detail, { bubbles = false, cancelable = false } = {}) {
         const e = document.createEvent('CustomEvent');
@@ -321,12 +334,34 @@ var app = (function () {
         dispatch_dev('SvelteDOMRemove', { node });
         detach(node);
     }
+    function listen_dev(node, event, handler, options, has_prevent_default, has_stop_propagation, has_stop_immediate_propagation) {
+        const modifiers = options === true ? ['capture'] : options ? Array.from(Object.keys(options)) : [];
+        if (has_prevent_default)
+            modifiers.push('preventDefault');
+        if (has_stop_propagation)
+            modifiers.push('stopPropagation');
+        if (has_stop_immediate_propagation)
+            modifiers.push('stopImmediatePropagation');
+        dispatch_dev('SvelteDOMAddEventListener', { node, event, handler, modifiers });
+        const dispose = listen(node, event, handler, options);
+        return () => {
+            dispatch_dev('SvelteDOMRemoveEventListener', { node, event, handler, modifiers });
+            dispose();
+        };
+    }
     function attr_dev(node, attribute, value) {
         attr(node, attribute, value);
         if (value == null)
             dispatch_dev('SvelteDOMRemoveAttribute', { node, attribute });
         else
             dispatch_dev('SvelteDOMSetAttribute', { node, attribute, value });
+    }
+    function set_data_dev(text, data) {
+        data = '' + data;
+        if (text.data === data)
+            return;
+        dispatch_dev('SvelteDOMSetData', { node: text, data });
+        text.data = data;
     }
     function validate_slots(name, slot, keys) {
         for (const slot_key of Object.keys(slot)) {
@@ -360,31 +395,67 @@ var app = (function () {
     const file = "src/App.svelte";
 
     function create_fragment(ctx) {
-    	let main;
-    	let h1;
+    	let input;
+    	let t0;
+    	let button;
+    	let t2;
+    	let p;
+    	let t3;
+    	let mounted;
+    	let dispose;
 
     	const block = {
     		c: function create() {
-    			main = element("main");
-    			h1 = element("h1");
-    			h1.textContent = "Hello world!";
-    			attr_dev(h1, "class", "svelte-x2ybtr");
-    			add_location(h1, file, 4, 2, 29);
-    			attr_dev(main, "class", "svelte-x2ybtr");
-    			add_location(main, file, 3, 0, 20);
+    			input = element("input");
+    			t0 = space();
+    			button = element("button");
+    			button.textContent = "Generate Text";
+    			t2 = space();
+    			p = element("p");
+    			t3 = text(/*response*/ ctx[1]);
+    			attr_dev(input, "placeholder", "Enter a prompt");
+    			add_location(input, file, 17, 0, 346);
+    			add_location(button, file, 18, 0, 405);
+    			add_location(p, file, 19, 0, 460);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
     		},
     		m: function mount(target, anchor) {
-    			insert_dev(target, main, anchor);
-    			append_dev(main, h1);
+    			insert_dev(target, input, anchor);
+    			set_input_value(input, /*prompt*/ ctx[0]);
+    			insert_dev(target, t0, anchor);
+    			insert_dev(target, button, anchor);
+    			insert_dev(target, t2, anchor);
+    			insert_dev(target, p, anchor);
+    			append_dev(p, t3);
+
+    			if (!mounted) {
+    				dispose = [
+    					listen_dev(input, "input", /*input_input_handler*/ ctx[3]),
+    					listen_dev(button, "click", /*generateText*/ ctx[2], false, false, false, false)
+    				];
+
+    				mounted = true;
+    			}
     		},
-    		p: noop,
+    		p: function update(ctx, [dirty]) {
+    			if (dirty & /*prompt*/ 1 && input.value !== /*prompt*/ ctx[0]) {
+    				set_input_value(input, /*prompt*/ ctx[0]);
+    			}
+
+    			if (dirty & /*response*/ 2) set_data_dev(t3, /*response*/ ctx[1]);
+    		},
     		i: noop,
     		o: noop,
     		d: function destroy(detaching) {
-    			if (detaching) detach_dev(main);
+    			if (detaching) detach_dev(input);
+    			if (detaching) detach_dev(t0);
+    			if (detaching) detach_dev(button);
+    			if (detaching) detach_dev(t2);
+    			if (detaching) detach_dev(p);
+    			mounted = false;
+    			run_all(dispose);
     		}
     	};
 
@@ -399,16 +470,45 @@ var app = (function () {
     	return block;
     }
 
-    function instance($$self, $$props) {
+    function instance($$self, $$props, $$invalidate) {
     	let { $$slots: slots = {}, $$scope } = $$props;
     	validate_slots('App', slots, []);
+    	let prompt = "";
+    	let response = "";
+
+    	async function generateText() {
+    		const res = await fetch("http://localhost:3000/api/generate-text", {
+    			method: "POST",
+    			headers: { "Content-Type": "application/json" },
+    			body: JSON.stringify({ prompt })
+    		});
+
+    		$$invalidate(1, response = await res.json());
+    	}
+
     	const writable_props = [];
 
     	Object.keys($$props).forEach(key => {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
-    	return [];
+    	function input_input_handler() {
+    		prompt = this.value;
+    		$$invalidate(0, prompt);
+    	}
+
+    	$$self.$capture_state = () => ({ prompt, response, generateText });
+
+    	$$self.$inject_state = $$props => {
+    		if ('prompt' in $$props) $$invalidate(0, prompt = $$props.prompt);
+    		if ('response' in $$props) $$invalidate(1, response = $$props.response);
+    	};
+
+    	if ($$props && "$$inject" in $$props) {
+    		$$self.$inject_state($$props.$$inject);
+    	}
+
+    	return [prompt, response, generateText, input_input_handler];
     }
 
     class App extends SvelteComponentDev {

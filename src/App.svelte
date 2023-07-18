@@ -1,22 +1,20 @@
 <script>
+  let prompt = "";
+  let response = "";
+
+  async function generateText() {
+    const res = await fetch("http://localhost:3000/api/generate-text", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ prompt }),
+    });
+
+    response = await res.json();
+  }
 </script>
 
-<main>
-  <h1>Hello world!</h1>
-</main>
-
-<style>
-  main {
-    text-align: center;
-    padding: 1em;
-    max-width: 240px;
-    margin: 0 auto;
-  }
-
-  h1 {
-    color: #ff3e00;
-    text-transform: uppercase;
-    font-size: 4em;
-    font-weight: 100;
-  }
-</style>
+<input bind:value={prompt} placeholder="Enter a prompt" />
+<button on:click={generateText}>Generate Text</button>
+<p>{response}</p>
