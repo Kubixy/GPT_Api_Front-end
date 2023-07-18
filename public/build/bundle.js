@@ -677,8 +677,8 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[7] = list[i];
-    	child_ctx[9] = i;
+    	child_ctx[8] = list[i];
+    	child_ctx[10] = i;
     	return child_ctx;
     }
 
@@ -688,13 +688,13 @@ var app = (function () {
     	let p;
     	let strong;
 
-    	let t0_value = (/*message*/ ctx[7].role === "user"
+    	let t0_value = (/*message*/ ctx[8].role === "user"
     	? "You: "
     	: "Assistant: ") + "";
 
     	let t0;
     	let t1;
-    	let t2_value = /*message*/ ctx[7].content + "";
+    	let t2_value = /*message*/ ctx[8].content + "";
     	let t2;
     	let t3;
     	let div_class_value;
@@ -711,9 +711,9 @@ var app = (function () {
     			t2 = text(t2_value);
     			t3 = space();
     			add_location(strong, file, 43, 8, 1064);
-    			attr_dev(p, "class", "svelte-uandlu");
+    			attr_dev(p, "class", "svelte-15mq08b");
     			add_location(p, file, 42, 6, 1052);
-    			attr_dev(div, "class", div_class_value = "message " + /*message*/ ctx[7].role);
+    			attr_dev(div, "class", div_class_value = "message " + /*message*/ ctx[8].role);
     			add_location(div, file, 41, 4, 1009);
     			this.first = div;
     		},
@@ -729,13 +729,13 @@ var app = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty & /*messages*/ 2 && t0_value !== (t0_value = (/*message*/ ctx[7].role === "user"
+    			if (dirty & /*messages*/ 2 && t0_value !== (t0_value = (/*message*/ ctx[8].role === "user"
     			? "You: "
     			: "Assistant: ") + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty & /*messages*/ 2 && t2_value !== (t2_value = /*message*/ ctx[7].content + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*messages*/ 2 && t2_value !== (t2_value = /*message*/ ctx[8].content + "")) set_data_dev(t2, t2_value);
 
-    			if (dirty & /*messages*/ 2 && div_class_value !== (div_class_value = "message " + /*message*/ ctx[7].role)) {
+    			if (dirty & /*messages*/ 2 && div_class_value !== (div_class_value = "message " + /*message*/ ctx[8].role)) {
     				attr_dev(div, "class", div_class_value);
     			}
     		},
@@ -755,7 +755,7 @@ var app = (function () {
     	return block;
     }
 
-    // (56:2) {:else}
+    // (62:2) {:else}
     function create_else_block(ctx) {
     	let button;
     	let mounted;
@@ -765,8 +765,8 @@ var app = (function () {
     		c: function create() {
     			button = element("button");
     			button.textContent = "Send";
-    			attr_dev(button, "class", "svelte-uandlu");
-    			add_location(button, file, 56, 4, 1372);
+    			attr_dev(button, "class", "svelte-15mq08b");
+    			add_location(button, file, 62, 4, 1472);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -790,14 +790,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(56:2) {:else}",
+    		source: "(62:2) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (54:2) {#if isLoading}
+    // (60:2) {#if isLoading}
     function create_if_block(ctx) {
     	let spinner;
     	let current;
@@ -830,7 +830,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(54:2) {#if isLoading}",
+    		source: "(60:2) {#if isLoading}",
     		ctx
     	});
 
@@ -846,8 +846,10 @@ var app = (function () {
     	let h1;
     	let t1;
     	let t2;
+    	let button;
+    	let t4;
     	let textarea;
-    	let t3;
+    	let t5;
     	let current_block_type_index;
     	let if_block;
     	let current;
@@ -855,7 +857,7 @@ var app = (function () {
     	let dispose;
     	let each_value = /*messages*/ ctx[1];
     	validate_each_argument(each_value);
-    	const get_key = ctx => /*index*/ ctx[9];
+    	const get_key = ctx => /*index*/ ctx[10];
     	validate_each_keys(ctx, each_value, get_each_context, get_key);
 
     	for (let i = 0; i < each_value.length; i += 1) {
@@ -888,20 +890,25 @@ var app = (function () {
     			h1 = element("h1");
     			t1 = text(/*tokenCount*/ ctx[3]);
     			t2 = space();
+    			button = element("button");
+    			button.textContent = "Reset";
+    			t4 = space();
     			textarea = element("textarea");
-    			t3 = space();
+    			t5 = space();
     			if_block.c();
     			attr_dev(div0, "id", "Conversation");
-    			attr_dev(div0, "class", "svelte-uandlu");
+    			attr_dev(div0, "class", "svelte-15mq08b");
     			add_location(div0, file, 39, 0, 936);
     			attr_dev(h1, "id", "token-count");
-    			attr_dev(h1, "class", "svelte-uandlu");
+    			attr_dev(h1, "class", "svelte-15mq08b");
     			add_location(h1, file, 51, 2, 1221);
+    			attr_dev(button, "class", "svelte-15mq08b");
+    			add_location(button, file, 52, 2, 1262);
     			attr_dev(textarea, "placeholder", "Enter a prompt");
-    			attr_dev(textarea, "class", "svelte-uandlu");
-    			add_location(textarea, file, 52, 2, 1262);
+    			attr_dev(textarea, "class", "svelte-15mq08b");
+    			add_location(textarea, file, 58, 2, 1362);
     			attr_dev(div1, "id", "Controls");
-    			attr_dev(div1, "class", "svelte-uandlu");
+    			attr_dev(div1, "class", "svelte-15mq08b");
     			add_location(div1, file, 50, 0, 1199);
     		},
     		l: function claim(nodes) {
@@ -921,14 +928,20 @@ var app = (function () {
     			append_dev(div1, h1);
     			append_dev(h1, t1);
     			append_dev(div1, t2);
+    			append_dev(div1, button);
+    			append_dev(div1, t4);
     			append_dev(div1, textarea);
     			set_input_value(textarea, /*prompt*/ ctx[0]);
-    			append_dev(div1, t3);
+    			append_dev(div1, t5);
     			if_blocks[current_block_type_index].m(div1, null);
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[5]);
+    				dispose = [
+    					listen_dev(button, "click", /*click_handler*/ ctx[5], false, false, false, false),
+    					listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[6])
+    				];
+
     				mounted = true;
     			}
     		},
@@ -992,7 +1005,7 @@ var app = (function () {
     			if (detaching) detach_dev(div1);
     			if_blocks[current_block_type_index].d();
     			mounted = false;
-    			dispose();
+    			run_all(dispose);
     		}
     	};
 
@@ -1050,6 +1063,11 @@ var app = (function () {
     		if (!~writable_props.indexOf(key) && key.slice(0, 2) !== '$$' && key !== 'slot') console_1.warn(`<App> was created with unknown prop '${key}'`);
     	});
 
+    	const click_handler = () => {
+    		$$invalidate(1, messages = []);
+    		$$invalidate(3, tokenCount = 0);
+    	};
+
     	function textarea_input_handler() {
     		prompt = this.value;
     		$$invalidate(0, prompt);
@@ -1077,7 +1095,15 @@ var app = (function () {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [prompt, messages, isLoading, tokenCount, generateText, textarea_input_handler];
+    	return [
+    		prompt,
+    		messages,
+    		isLoading,
+    		tokenCount,
+    		generateText,
+    		click_handler,
+    		textarea_input_handler
+    	];
     }
 
     class App extends SvelteComponentDev {

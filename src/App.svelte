@@ -50,6 +50,12 @@
 
 <div id="Controls">
   <h1 id="token-count">{tokenCount}</h1>
+  <button
+    on:click={() => {
+      messages = [];
+      tokenCount = 0;
+    }}>Reset</button
+  >
   <textarea bind:value={prompt} placeholder="Enter a prompt" />
   {#if isLoading}
     <Spinner />
@@ -78,7 +84,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 1em;
+    padding: 0.5em;
     gap: 1em;
     background-color: coral;
   }
@@ -91,7 +97,7 @@
   }
 
   #Conversation {
-    padding-bottom: 7.5em;
+    padding-bottom: 7em;
   }
 
   button {
