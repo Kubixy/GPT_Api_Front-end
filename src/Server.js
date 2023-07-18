@@ -29,14 +29,12 @@ app.post("/api/generate-text", async (req, res) => {
     const assistantMessage = response.data.choices[0].message.content;
     conversation.push({ role: "assistant", content: assistantMessage });
 
-    res.json(conversation);
-    console.log(
-      `Total tokens used in conversation: ${countTokensInConversation(
-        conversation
-      )}`
-    );
+    let tokenCount = countTokensInConversation(conversation);
+
+    res.status(200).json({ conversation, tokenCount });
+    console.log(`Total tokens used in conversation: ${tokenCount}`);
   } catch (err) {
-    console.error(err.response.data.error);
+    console.error(err);
     res.status(500).json({ error: "An error occurred" });
   }
 });

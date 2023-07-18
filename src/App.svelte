@@ -5,6 +5,7 @@
   let messages = [];
   let tmpPrompt;
   let isLoading = false;
+  let tokenCount = 0;
 
   async function generateText() {
     tmpPrompt = prompt;
@@ -24,8 +25,9 @@
       });
 
       const response = await res.json();
-      if (Array.isArray(response)) {
-        messages = [...messages, ...response.slice(messages.length)];
+      if (Array.isArray(response.conversation)) {
+        messages = response.conversation;
+        tokenCount = response.tokenCount;
       } else {
         console.error("Error from server:", response);
       }
@@ -47,6 +49,7 @@
 </div>
 
 <div id="Controls">
+  <h1 id="token-count">{tokenCount}</h1>
   <textarea bind:value={prompt} placeholder="Enter a prompt" />
   {#if isLoading}
     <Spinner />
@@ -76,12 +79,19 @@
     justify-content: center;
     align-items: center;
     padding: 1em;
-    gap: 0.5em;
+    gap: 1em;
     background-color: coral;
   }
 
+  #token-count {
+    color: aliceblue;
+    background-color: black;
+    padding: 0.2em;
+    border-radius: 1em;
+  }
+
   #Conversation {
-    padding-bottom: 6em;
+    padding-bottom: 7.5em;
   }
 
   button {

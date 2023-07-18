@@ -677,24 +677,24 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[6] = list[i];
-    	child_ctx[8] = i;
+    	child_ctx[7] = list[i];
+    	child_ctx[9] = i;
     	return child_ctx;
     }
 
-    // (39:2) {#each messages as message, index (index)}
+    // (41:2) {#each messages as message, index (index)}
     function create_each_block(key_1, ctx) {
     	let div;
     	let p;
     	let strong;
 
-    	let t0_value = (/*message*/ ctx[6].role === "user"
+    	let t0_value = (/*message*/ ctx[7].role === "user"
     	? "You: "
     	: "Assistant: ") + "";
 
     	let t0;
     	let t1;
-    	let t2_value = /*message*/ ctx[6].content + "";
+    	let t2_value = /*message*/ ctx[7].content + "";
     	let t2;
     	let t3;
     	let div_class_value;
@@ -710,11 +710,11 @@ var app = (function () {
     			t1 = space();
     			t2 = text(t2_value);
     			t3 = space();
-    			add_location(strong, file, 41, 8, 1015);
-    			attr_dev(p, "class", "svelte-fc4m4x");
-    			add_location(p, file, 40, 6, 1003);
-    			attr_dev(div, "class", div_class_value = "message " + /*message*/ ctx[6].role);
-    			add_location(div, file, 39, 4, 960);
+    			add_location(strong, file, 43, 8, 1064);
+    			attr_dev(p, "class", "svelte-uandlu");
+    			add_location(p, file, 42, 6, 1052);
+    			attr_dev(div, "class", div_class_value = "message " + /*message*/ ctx[7].role);
+    			add_location(div, file, 41, 4, 1009);
     			this.first = div;
     		},
     		m: function mount(target, anchor) {
@@ -729,13 +729,13 @@ var app = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty & /*messages*/ 2 && t0_value !== (t0_value = (/*message*/ ctx[6].role === "user"
+    			if (dirty & /*messages*/ 2 && t0_value !== (t0_value = (/*message*/ ctx[7].role === "user"
     			? "You: "
     			: "Assistant: ") + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty & /*messages*/ 2 && t2_value !== (t2_value = /*message*/ ctx[6].content + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*messages*/ 2 && t2_value !== (t2_value = /*message*/ ctx[7].content + "")) set_data_dev(t2, t2_value);
 
-    			if (dirty & /*messages*/ 2 && div_class_value !== (div_class_value = "message " + /*message*/ ctx[6].role)) {
+    			if (dirty & /*messages*/ 2 && div_class_value !== (div_class_value = "message " + /*message*/ ctx[7].role)) {
     				attr_dev(div, "class", div_class_value);
     			}
     		},
@@ -748,14 +748,14 @@ var app = (function () {
     		block,
     		id: create_each_block.name,
     		type: "each",
-    		source: "(39:2) {#each messages as message, index (index)}",
+    		source: "(41:2) {#each messages as message, index (index)}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (53:2) {:else}
+    // (56:2) {:else}
     function create_else_block(ctx) {
     	let button;
     	let mounted;
@@ -765,14 +765,14 @@ var app = (function () {
     		c: function create() {
     			button = element("button");
     			button.textContent = "Send";
-    			attr_dev(button, "class", "svelte-fc4m4x");
-    			add_location(button, file, 53, 4, 1282);
+    			attr_dev(button, "class", "svelte-uandlu");
+    			add_location(button, file, 56, 4, 1372);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
 
     			if (!mounted) {
-    				dispose = listen_dev(button, "click", /*generateText*/ ctx[3], false, false, false, false);
+    				dispose = listen_dev(button, "click", /*generateText*/ ctx[4], false, false, false, false);
     				mounted = true;
     			}
     		},
@@ -790,14 +790,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(53:2) {:else}",
+    		source: "(56:2) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (51:2) {#if isLoading}
+    // (54:2) {#if isLoading}
     function create_if_block(ctx) {
     	let spinner;
     	let current;
@@ -830,7 +830,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(51:2) {#if isLoading}",
+    		source: "(54:2) {#if isLoading}",
     		ctx
     	});
 
@@ -843,8 +843,11 @@ var app = (function () {
     	let each_1_lookup = new Map();
     	let t0;
     	let div1;
-    	let textarea;
+    	let h1;
     	let t1;
+    	let t2;
+    	let textarea;
+    	let t3;
     	let current_block_type_index;
     	let if_block;
     	let current;
@@ -852,7 +855,7 @@ var app = (function () {
     	let dispose;
     	let each_value = /*messages*/ ctx[1];
     	validate_each_argument(each_value);
-    	const get_key = ctx => /*index*/ ctx[8];
+    	const get_key = ctx => /*index*/ ctx[9];
     	validate_each_keys(ctx, each_value, get_each_context, get_key);
 
     	for (let i = 0; i < each_value.length; i += 1) {
@@ -882,18 +885,24 @@ var app = (function () {
 
     			t0 = space();
     			div1 = element("div");
+    			h1 = element("h1");
+    			t1 = text(/*tokenCount*/ ctx[3]);
+    			t2 = space();
     			textarea = element("textarea");
-    			t1 = space();
+    			t3 = space();
     			if_block.c();
     			attr_dev(div0, "id", "Conversation");
-    			attr_dev(div0, "class", "svelte-fc4m4x");
-    			add_location(div0, file, 37, 0, 887);
+    			attr_dev(div0, "class", "svelte-uandlu");
+    			add_location(div0, file, 39, 0, 936);
+    			attr_dev(h1, "id", "token-count");
+    			attr_dev(h1, "class", "svelte-uandlu");
+    			add_location(h1, file, 51, 2, 1221);
     			attr_dev(textarea, "placeholder", "Enter a prompt");
-    			attr_dev(textarea, "class", "svelte-fc4m4x");
-    			add_location(textarea, file, 49, 2, 1172);
+    			attr_dev(textarea, "class", "svelte-uandlu");
+    			add_location(textarea, file, 52, 2, 1262);
     			attr_dev(div1, "id", "Controls");
-    			attr_dev(div1, "class", "svelte-fc4m4x");
-    			add_location(div1, file, 48, 0, 1150);
+    			attr_dev(div1, "class", "svelte-uandlu");
+    			add_location(div1, file, 50, 0, 1199);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -909,14 +918,17 @@ var app = (function () {
 
     			insert_dev(target, t0, anchor);
     			insert_dev(target, div1, anchor);
+    			append_dev(div1, h1);
+    			append_dev(h1, t1);
+    			append_dev(div1, t2);
     			append_dev(div1, textarea);
     			set_input_value(textarea, /*prompt*/ ctx[0]);
-    			append_dev(div1, t1);
+    			append_dev(div1, t3);
     			if_blocks[current_block_type_index].m(div1, null);
     			current = true;
 
     			if (!mounted) {
-    				dispose = listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[4]);
+    				dispose = listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[5]);
     				mounted = true;
     			}
     		},
@@ -927,6 +939,8 @@ var app = (function () {
     				validate_each_keys(ctx, each_value, get_each_context, get_key);
     				each_blocks = update_keyed_each(each_blocks, dirty, get_key, 1, ctx, each_value, each_1_lookup, div0, destroy_block, create_each_block, null, get_each_context);
     			}
+
+    			if (!current || dirty & /*tokenCount*/ 8) set_data_dev(t1, /*tokenCount*/ ctx[3]);
 
     			if (dirty & /*prompt*/ 1) {
     				set_input_value(textarea, /*prompt*/ ctx[0]);
@@ -1000,6 +1014,7 @@ var app = (function () {
     	let messages = [];
     	let tmpPrompt;
     	let isLoading = false;
+    	let tokenCount = 0;
 
     	async function generateText() {
     		tmpPrompt = prompt;
@@ -1018,8 +1033,9 @@ var app = (function () {
 
     			const response = await res.json();
 
-    			if (Array.isArray(response)) {
-    				$$invalidate(1, messages = [...messages, ...response.slice(messages.length)]);
+    			if (Array.isArray(response.conversation)) {
+    				$$invalidate(1, messages = response.conversation);
+    				$$invalidate(3, tokenCount = response.tokenCount);
     			} else {
     				console.error("Error from server:", response);
     			}
@@ -1045,6 +1061,7 @@ var app = (function () {
     		messages,
     		tmpPrompt,
     		isLoading,
+    		tokenCount,
     		generateText
     	});
 
@@ -1053,13 +1070,14 @@ var app = (function () {
     		if ('messages' in $$props) $$invalidate(1, messages = $$props.messages);
     		if ('tmpPrompt' in $$props) tmpPrompt = $$props.tmpPrompt;
     		if ('isLoading' in $$props) $$invalidate(2, isLoading = $$props.isLoading);
+    		if ('tokenCount' in $$props) $$invalidate(3, tokenCount = $$props.tokenCount);
     	};
 
     	if ($$props && "$$inject" in $$props) {
     		$$self.$inject_state($$props.$$inject);
     	}
 
-    	return [prompt, messages, isLoading, generateText, textarea_input_handler];
+    	return [prompt, messages, isLoading, tokenCount, generateText, textarea_input_handler];
     }
 
     class App extends SvelteComponentDev {
