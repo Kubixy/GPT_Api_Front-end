@@ -65,26 +65,22 @@
 </div>
 
 <style>
-  * {
-    font-family: Arial, sans-serif;
-  }
-
   .user-message p {
-    text-align: left;
     background-color: #ece4e4;
-    padding: 1em;
-    margin: 1em 0;
-    border-radius: 0.8em;
     color: #333;
   }
 
   .assistant-message p {
-    text-align: left;
     background-color: #007bff;
+    color: #fff;
+  }
+
+  .user-message p,
+  .assistant-message p {
+    text-align: left;
     padding: 1em;
     margin: 1em 0;
     border-radius: 0.8em;
-    color: #fff;
   }
 
   #Controls {
