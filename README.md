@@ -13,4 +13,4 @@ When a user inputs a message, it's sent to the OpenAI API. The API responds with
 
 ## License
 
-This project is licensed under the terms of the MIT license. For more details, see the [LICENSE](./LICENSE.txt) file.
+This project is licensed under the terms of the MIT license. For more details, see the [LICENSE](https://github.com/Kubixy/GPT_Api_Front-end/blob/master/LICENSE) file.
