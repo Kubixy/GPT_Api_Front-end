@@ -27,6 +27,9 @@ var app = (function () {
     function is_empty(obj) {
         return Object.keys(obj).length === 0;
     }
+    function null_to_empty(value) {
+        return value == null ? '' : value;
+    }
 
     const globals = (typeof window !== 'undefined'
         ? window
@@ -677,8 +680,8 @@ var app = (function () {
 
     function get_each_context(ctx, list, i) {
     	const child_ctx = ctx.slice();
-    	child_ctx[8] = list[i];
-    	child_ctx[10] = i;
+    	child_ctx[10] = list[i];
+    	child_ctx[12] = i;
     	return child_ctx;
     }
 
@@ -688,13 +691,13 @@ var app = (function () {
     	let p;
     	let strong;
 
-    	let t0_value = (/*message*/ ctx[8].role === "user"
+    	let t0_value = (/*message*/ ctx[10].role === "user"
     	? "You: "
     	: "Assistant: ") + "";
 
     	let t0;
     	let t1;
-    	let t2_value = /*message*/ ctx[8].content + "";
+    	let t2_value = /*message*/ ctx[10].content + "";
     	let t2;
     	let t3;
     	let div_class_value;
@@ -710,10 +713,15 @@ var app = (function () {
     			t1 = space();
     			t2 = text(t2_value);
     			t3 = space();
-    			add_location(strong, file, 43, 8, 1064);
-    			attr_dev(p, "class", "svelte-15mq08b");
-    			add_location(p, file, 42, 6, 1052);
-    			attr_dev(div, "class", div_class_value = "message " + /*message*/ ctx[8].role);
+    			attr_dev(strong, "class", "svelte-oy54oc");
+    			add_location(strong, file, 43, 8, 1104);
+    			attr_dev(p, "class", "svelte-oy54oc");
+    			add_location(p, file, 42, 6, 1092);
+
+    			attr_dev(div, "class", div_class_value = "" + (null_to_empty(/*message*/ ctx[10].role === "user"
+    			? "user-message"
+    			: "assistant-message") + " svelte-oy54oc"));
+
     			add_location(div, file, 41, 4, 1009);
     			this.first = div;
     		},
@@ -729,13 +737,15 @@ var app = (function () {
     		p: function update(new_ctx, dirty) {
     			ctx = new_ctx;
 
-    			if (dirty & /*messages*/ 2 && t0_value !== (t0_value = (/*message*/ ctx[8].role === "user"
+    			if (dirty & /*messages*/ 2 && t0_value !== (t0_value = (/*message*/ ctx[10].role === "user"
     			? "You: "
     			: "Assistant: ") + "")) set_data_dev(t0, t0_value);
 
-    			if (dirty & /*messages*/ 2 && t2_value !== (t2_value = /*message*/ ctx[8].content + "")) set_data_dev(t2, t2_value);
+    			if (dirty & /*messages*/ 2 && t2_value !== (t2_value = /*message*/ ctx[10].content + "")) set_data_dev(t2, t2_value);
 
-    			if (dirty & /*messages*/ 2 && div_class_value !== (div_class_value = "message " + /*message*/ ctx[8].role)) {
+    			if (dirty & /*messages*/ 2 && div_class_value !== (div_class_value = "" + (null_to_empty(/*message*/ ctx[10].role === "user"
+    			? "user-message"
+    			: "assistant-message") + " svelte-oy54oc"))) {
     				attr_dev(div, "class", div_class_value);
     			}
     		},
@@ -756,6 +766,88 @@ var app = (function () {
     }
 
     // (62:2) {:else}
+    function create_else_block_1(ctx) {
+    	let button;
+    	let mounted;
+    	let dispose;
+
+    	const block = {
+    		c: function create() {
+    			button = element("button");
+    			button.textContent = "Send";
+    			attr_dev(button, "class", "svelte-oy54oc");
+    			add_location(button, file, 62, 4, 1512);
+    		},
+    		m: function mount(target, anchor) {
+    			insert_dev(target, button, anchor);
+
+    			if (!mounted) {
+    				dispose = listen_dev(button, "click", /*generateText*/ ctx[4], false, false, false, false);
+    				mounted = true;
+    			}
+    		},
+    		p: noop,
+    		i: noop,
+    		o: noop,
+    		d: function destroy(detaching) {
+    			if (detaching) detach_dev(button);
+    			mounted = false;
+    			dispose();
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_else_block_1.name,
+    		type: "else",
+    		source: "(62:2) {:else}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (60:2) {#if isLoading}
+    function create_if_block_1(ctx) {
+    	let spinner;
+    	let current;
+    	spinner = new Spinner({ $$inline: true });
+
+    	const block = {
+    		c: function create() {
+    			create_component(spinner.$$.fragment);
+    		},
+    		m: function mount(target, anchor) {
+    			mount_component(spinner, target, anchor);
+    			current = true;
+    		},
+    		p: noop,
+    		i: function intro(local) {
+    			if (current) return;
+    			transition_in(spinner.$$.fragment, local);
+    			current = true;
+    		},
+    		o: function outro(local) {
+    			transition_out(spinner.$$.fragment, local);
+    			current = false;
+    		},
+    		d: function destroy(detaching) {
+    			destroy_component(spinner, detaching);
+    		}
+    	};
+
+    	dispatch_dev("SvelteRegisterBlock", {
+    		block,
+    		id: create_if_block_1.name,
+    		type: "if",
+    		source: "(60:2) {#if isLoading}",
+    		ctx
+    	});
+
+    	return block;
+    }
+
+    // (78:2) {:else}
     function create_else_block(ctx) {
     	let button;
     	let mounted;
@@ -765,8 +857,8 @@ var app = (function () {
     		c: function create() {
     			button = element("button");
     			button.textContent = "Send";
-    			attr_dev(button, "class", "svelte-15mq08b");
-    			add_location(button, file, 62, 4, 1472);
+    			attr_dev(button, "class", "svelte-oy54oc");
+    			add_location(button, file, 78, 4, 1847);
     		},
     		m: function mount(target, anchor) {
     			insert_dev(target, button, anchor);
@@ -790,14 +882,14 @@ var app = (function () {
     		block,
     		id: create_else_block.name,
     		type: "else",
-    		source: "(62:2) {:else}",
+    		source: "(78:2) {:else}",
     		ctx
     	});
 
     	return block;
     }
 
-    // (60:2) {#if isLoading}
+    // (76:2) {#if isLoading}
     function create_if_block(ctx) {
     	let spinner;
     	let current;
@@ -830,7 +922,7 @@ var app = (function () {
     		block,
     		id: create_if_block.name,
     		type: "if",
-    		source: "(60:2) {#if isLoading}",
+    		source: "(76:2) {#if isLoading}",
     		ctx
     	});
 
@@ -843,21 +935,32 @@ var app = (function () {
     	let each_1_lookup = new Map();
     	let t0;
     	let div1;
-    	let h1;
+    	let h10;
     	let t1;
     	let t2;
-    	let button;
+    	let button0;
     	let t4;
-    	let textarea;
+    	let textarea0;
     	let t5;
     	let current_block_type_index;
-    	let if_block;
+    	let if_block0;
+    	let t6;
+    	let div2;
+    	let h11;
+    	let t7;
+    	let t8;
+    	let button1;
+    	let t10;
+    	let textarea1;
+    	let t11;
+    	let current_block_type_index_1;
+    	let if_block1;
     	let current;
     	let mounted;
     	let dispose;
     	let each_value = /*messages*/ ctx[1];
     	validate_each_argument(each_value);
-    	const get_key = ctx => /*index*/ ctx[10];
+    	const get_key = ctx => /*index*/ ctx[12];
     	validate_each_keys(ctx, each_value, get_each_context, get_key);
 
     	for (let i = 0; i < each_value.length; i += 1) {
@@ -866,7 +969,7 @@ var app = (function () {
     		each_1_lookup.set(key, each_blocks[i] = create_each_block(key, child_ctx));
     	}
 
-    	const if_block_creators = [create_if_block, create_else_block];
+    	const if_block_creators = [create_if_block_1, create_else_block_1];
     	const if_blocks = [];
 
     	function select_block_type(ctx, dirty) {
@@ -875,7 +978,17 @@ var app = (function () {
     	}
 
     	current_block_type_index = select_block_type(ctx);
-    	if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    	if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    	const if_block_creators_1 = [create_if_block, create_else_block];
+    	const if_blocks_1 = [];
+
+    	function select_block_type_1(ctx, dirty) {
+    		if (/*isLoading*/ ctx[2]) return 0;
+    		return 1;
+    	}
+
+    	current_block_type_index_1 = select_block_type_1(ctx);
+    	if_block1 = if_blocks_1[current_block_type_index_1] = if_block_creators_1[current_block_type_index_1](ctx);
 
     	const block = {
     		c: function create() {
@@ -887,29 +1000,51 @@ var app = (function () {
 
     			t0 = space();
     			div1 = element("div");
-    			h1 = element("h1");
+    			h10 = element("h1");
     			t1 = text(/*tokenCount*/ ctx[3]);
     			t2 = space();
-    			button = element("button");
-    			button.textContent = "Reset";
+    			button0 = element("button");
+    			button0.textContent = "Reset";
     			t4 = space();
-    			textarea = element("textarea");
+    			textarea0 = element("textarea");
     			t5 = space();
-    			if_block.c();
+    			if_block0.c();
+    			t6 = space();
+    			div2 = element("div");
+    			h11 = element("h1");
+    			t7 = text(/*tokenCount*/ ctx[3]);
+    			t8 = space();
+    			button1 = element("button");
+    			button1.textContent = "Reset";
+    			t10 = space();
+    			textarea1 = element("textarea");
+    			t11 = space();
+    			if_block1.c();
     			attr_dev(div0, "id", "Conversation");
-    			attr_dev(div0, "class", "svelte-15mq08b");
+    			attr_dev(div0, "class", "svelte-oy54oc");
     			add_location(div0, file, 39, 0, 936);
-    			attr_dev(h1, "id", "token-count");
-    			attr_dev(h1, "class", "svelte-15mq08b");
-    			add_location(h1, file, 51, 2, 1221);
-    			attr_dev(button, "class", "svelte-15mq08b");
-    			add_location(button, file, 52, 2, 1262);
-    			attr_dev(textarea, "placeholder", "Enter a prompt");
-    			attr_dev(textarea, "class", "svelte-15mq08b");
-    			add_location(textarea, file, 58, 2, 1362);
+    			attr_dev(h10, "id", "token-count");
+    			attr_dev(h10, "class", "svelte-oy54oc");
+    			add_location(h10, file, 51, 2, 1261);
+    			attr_dev(button0, "class", "svelte-oy54oc");
+    			add_location(button0, file, 52, 2, 1302);
+    			attr_dev(textarea0, "placeholder", "Enter a prompt");
+    			attr_dev(textarea0, "class", "svelte-oy54oc");
+    			add_location(textarea0, file, 58, 2, 1402);
     			attr_dev(div1, "id", "Controls");
-    			attr_dev(div1, "class", "svelte-15mq08b");
-    			add_location(div1, file, 50, 0, 1199);
+    			attr_dev(div1, "class", "svelte-oy54oc");
+    			add_location(div1, file, 50, 0, 1239);
+    			attr_dev(h11, "id", "token-count");
+    			attr_dev(h11, "class", "svelte-oy54oc");
+    			add_location(h11, file, 67, 2, 1596);
+    			attr_dev(button1, "class", "svelte-oy54oc");
+    			add_location(button1, file, 68, 2, 1637);
+    			attr_dev(textarea1, "placeholder", "Enter a prompt");
+    			attr_dev(textarea1, "class", "svelte-oy54oc");
+    			add_location(textarea1, file, 74, 2, 1737);
+    			attr_dev(div2, "id", "Controls");
+    			attr_dev(div2, "class", "svelte-oy54oc");
+    			add_location(div2, file, 66, 0, 1574);
     		},
     		l: function claim(nodes) {
     			throw new Error("options.hydrate only works if the component was compiled with the `hydratable: true` option");
@@ -925,21 +1060,34 @@ var app = (function () {
 
     			insert_dev(target, t0, anchor);
     			insert_dev(target, div1, anchor);
-    			append_dev(div1, h1);
-    			append_dev(h1, t1);
+    			append_dev(div1, h10);
+    			append_dev(h10, t1);
     			append_dev(div1, t2);
-    			append_dev(div1, button);
+    			append_dev(div1, button0);
     			append_dev(div1, t4);
-    			append_dev(div1, textarea);
-    			set_input_value(textarea, /*prompt*/ ctx[0]);
+    			append_dev(div1, textarea0);
+    			set_input_value(textarea0, /*prompt*/ ctx[0]);
     			append_dev(div1, t5);
     			if_blocks[current_block_type_index].m(div1, null);
+    			insert_dev(target, t6, anchor);
+    			insert_dev(target, div2, anchor);
+    			append_dev(div2, h11);
+    			append_dev(h11, t7);
+    			append_dev(div2, t8);
+    			append_dev(div2, button1);
+    			append_dev(div2, t10);
+    			append_dev(div2, textarea1);
+    			set_input_value(textarea1, /*prompt*/ ctx[0]);
+    			append_dev(div2, t11);
+    			if_blocks_1[current_block_type_index_1].m(div2, null);
     			current = true;
 
     			if (!mounted) {
     				dispose = [
-    					listen_dev(button, "click", /*click_handler*/ ctx[5], false, false, false, false),
-    					listen_dev(textarea, "input", /*textarea_input_handler*/ ctx[6])
+    					listen_dev(button0, "click", /*click_handler*/ ctx[5], false, false, false, false),
+    					listen_dev(textarea0, "input", /*textarea0_input_handler*/ ctx[6]),
+    					listen_dev(button1, "click", /*click_handler_1*/ ctx[7], false, false, false, false),
+    					listen_dev(textarea1, "input", /*textarea1_input_handler*/ ctx[8])
     				];
 
     				mounted = true;
@@ -956,7 +1104,7 @@ var app = (function () {
     			if (!current || dirty & /*tokenCount*/ 8) set_data_dev(t1, /*tokenCount*/ ctx[3]);
 
     			if (dirty & /*prompt*/ 1) {
-    				set_input_value(textarea, /*prompt*/ ctx[0]);
+    				set_input_value(textarea0, /*prompt*/ ctx[0]);
     			}
 
     			let previous_block_index = current_block_type_index;
@@ -972,26 +1120,60 @@ var app = (function () {
     				});
 
     				check_outros();
-    				if_block = if_blocks[current_block_type_index];
+    				if_block0 = if_blocks[current_block_type_index];
 
-    				if (!if_block) {
-    					if_block = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
-    					if_block.c();
+    				if (!if_block0) {
+    					if_block0 = if_blocks[current_block_type_index] = if_block_creators[current_block_type_index](ctx);
+    					if_block0.c();
     				} else {
-    					if_block.p(ctx, dirty);
+    					if_block0.p(ctx, dirty);
     				}
 
-    				transition_in(if_block, 1);
-    				if_block.m(div1, null);
+    				transition_in(if_block0, 1);
+    				if_block0.m(div1, null);
+    			}
+
+    			if (!current || dirty & /*tokenCount*/ 8) set_data_dev(t7, /*tokenCount*/ ctx[3]);
+
+    			if (dirty & /*prompt*/ 1) {
+    				set_input_value(textarea1, /*prompt*/ ctx[0]);
+    			}
+
+    			let previous_block_index_1 = current_block_type_index_1;
+    			current_block_type_index_1 = select_block_type_1(ctx);
+
+    			if (current_block_type_index_1 === previous_block_index_1) {
+    				if_blocks_1[current_block_type_index_1].p(ctx, dirty);
+    			} else {
+    				group_outros();
+
+    				transition_out(if_blocks_1[previous_block_index_1], 1, 1, () => {
+    					if_blocks_1[previous_block_index_1] = null;
+    				});
+
+    				check_outros();
+    				if_block1 = if_blocks_1[current_block_type_index_1];
+
+    				if (!if_block1) {
+    					if_block1 = if_blocks_1[current_block_type_index_1] = if_block_creators_1[current_block_type_index_1](ctx);
+    					if_block1.c();
+    				} else {
+    					if_block1.p(ctx, dirty);
+    				}
+
+    				transition_in(if_block1, 1);
+    				if_block1.m(div2, null);
     			}
     		},
     		i: function intro(local) {
     			if (current) return;
-    			transition_in(if_block);
+    			transition_in(if_block0);
+    			transition_in(if_block1);
     			current = true;
     		},
     		o: function outro(local) {
-    			transition_out(if_block);
+    			transition_out(if_block0);
+    			transition_out(if_block1);
     			current = false;
     		},
     		d: function destroy(detaching) {
@@ -1004,6 +1186,9 @@ var app = (function () {
     			if (detaching) detach_dev(t0);
     			if (detaching) detach_dev(div1);
     			if_blocks[current_block_type_index].d();
+    			if (detaching) detach_dev(t6);
+    			if (detaching) detach_dev(div2);
+    			if_blocks_1[current_block_type_index_1].d();
     			mounted = false;
     			run_all(dispose);
     		}
@@ -1068,7 +1253,17 @@ var app = (function () {
     		$$invalidate(3, tokenCount = 0);
     	};
 
-    	function textarea_input_handler() {
+    	function textarea0_input_handler() {
+    		prompt = this.value;
+    		$$invalidate(0, prompt);
+    	}
+
+    	const click_handler_1 = () => {
+    		$$invalidate(1, messages = []);
+    		$$invalidate(3, tokenCount = 0);
+    	};
+
+    	function textarea1_input_handler() {
     		prompt = this.value;
     		$$invalidate(0, prompt);
     	}
@@ -1102,7 +1297,9 @@ var app = (function () {
     		tokenCount,
     		generateText,
     		click_handler,
-    		textarea_input_handler
+    		textarea0_input_handler,
+    		click_handler_1,
+    		textarea1_input_handler
     	];
     }
 

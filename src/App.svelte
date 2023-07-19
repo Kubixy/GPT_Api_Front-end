@@ -39,7 +39,7 @@
 
 <div id="Conversation">
   {#each messages as message, index (index)}
-    <div class="message {message.role}">
+    <div class={message.role === "user" ? "user-message" : "assistant-message"}>
       <p>
         <strong>{message.role === "user" ? "You: " : "Assistant: "}</strong>
         {message.content}
@@ -64,16 +64,43 @@
   {/if}
 </div>
 
+<div id="Controls">
+  <h1 id="token-count">{tokenCount}</h1>
+  <button
+    on:click={() => {
+      messages = [];
+      tokenCount = 0;
+    }}>Reset</button
+  >
+  <textarea bind:value={prompt} placeholder="Enter a prompt" />
+  {#if isLoading}
+    <Spinner />
+  {:else}
+    <button on:click={generateText}>Send</button>
+  {/if}
+</div>
+
 <style>
-  p {
-    text-align: left;
-    background-color: bisque;
-    padding: 1em;
+  * {
+    font-family: Arial, sans-serif;
   }
 
-  p,
-  textarea {
-    border-radius: 1em;
+  .user-message p {
+    text-align: left;
+    background-color: #ece4e4;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 0.8em;
+    color: #333;
+  }
+
+  .assistant-message p {
+    text-align: left;
+    background-color: #007bff;
+    padding: 1em;
+    margin: 1em 0;
+    border-radius: 0.8em;
+    color: #fff;
   }
 
   #Controls {
@@ -81,33 +108,50 @@
     bottom: 0;
     left: 0;
     right: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     padding: 0.5em;
+    background-color: #f5f5f5;
+    box-shadow: 0px -2px 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
     gap: 1em;
-    background-color: coral;
+    margin: 0 0 -0.5em 0;
   }
 
   #token-count {
-    color: aliceblue;
-    background-color: black;
-    padding: 0.2em;
+    color: #333;
+    background-color: #e0e0e0;
+    padding: 0.2em 0.8em;
     border-radius: 1em;
   }
 
-  #Conversation {
-    padding-bottom: 7em;
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5em;
+    width: 3.25em;
+    height: 2.5em;
+    border-radius: 3em;
+    border: none;
+    color: #fff;
+    background-color: #333;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
   }
 
-  button {
-    max-height: 3em;
-    max-width: 4em;
-    border-radius: 3em;
+  button:hover {
+    background-color: #1a1a1a;
   }
 
   textarea {
-    width: 75%;
+    width: 100%;
+    height: 5em;
     resize: none;
+    padding: 0.5em;
+    border-radius: 0.8em;
+    border: 2px solid #333;
+    font-size: 1em;
+    line-height: 1.5em;
   }
 </style>
