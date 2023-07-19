@@ -64,22 +64,6 @@
   {/if}
 </div>
 
-<div id="Controls">
-  <h1 id="token-count">{tokenCount}</h1>
-  <button
-    on:click={() => {
-      messages = [];
-      tokenCount = 0;
-    }}>Reset</button
-  >
-  <textarea bind:value={prompt} placeholder="Enter a prompt" />
-  {#if isLoading}
-    <Spinner />
-  {:else}
-    <button on:click={generateText}>Send</button>
-  {/if}
-</div>
-
 <style>
   * {
     font-family: Arial, sans-serif;
